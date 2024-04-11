@@ -5,15 +5,43 @@ import StudentLogin from './components/StudentLogin';
 import StudentSignup from './components/StudentSignup';
 import TeacherLogin from './components/TeacherLogin';
 import TeacherSignup from './components/TeacherSignup';
+import ProfHome from './components/ProfHome';
+import { createBrowserRouter,RouterProvider } from 'react-router-dom';
+import StudentHome from './components/StudentHome';
 
 function App() {
+  const router=createBrowserRouter([
+    {
+      path:'/',
+      element:<LandingPage/>
+
+    },
+    {
+      path:'/proflogin',
+      element:<TeacherLogin/>
+    },
+    {
+      path:'/profhome',
+      element:<ProfHome/>
+    },
+    {
+      path:'/studentlogin',
+      element:<StudentLogin/>
+    },
+    {
+      path:'/studenthome',
+      element:<StudentHome/>
+    }
+  ])
+
   return (
  <>
- {/* <LandingPage/> */}
- {/* <TeacherSignup/> */}
+
+  {/*<TeacherSignup/> */}
  {/* <StudentSignup/> */}
- {/* <TeacherLogin/> */}
- <StudentLogin/>
+  {/*<TeacherLogin/>*/}
+ {/*<StudentLogin/>*/}
+<RouterProvider router={router}/>
  
  </>
   );

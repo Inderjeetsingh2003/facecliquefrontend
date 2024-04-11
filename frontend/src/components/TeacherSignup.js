@@ -7,12 +7,12 @@ export default function TeacherSignup() {
 
 <section class="bg-white">
   <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
-    <section class="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
+    <section class="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6 ">
        <img
         alt="" 
-        src="img/1.png"
+        src="img/profimg.png"
         class="absolute inset-0 h-full w-full object-cover opacity-80"
-      />
+        style={{ bottom: '-20px' }}      />
 
       <div class="hidden lg:relative lg:block lg:p-12">
         <a class="block text-white" href="/">
