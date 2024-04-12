@@ -10,11 +10,11 @@ function App() {
   return (
  <>
  {/* <LandingPage/> */}
- {/* <TeacherSignup/> */}
+ <TeacherSignup/>
  {/* <StudentSignup/> */}
  {/* <TeacherLogin/> */}
- <StudentLogin/>
- 
+ {/* <StudentLogin/>
+  */}
  </>
   );
 }
