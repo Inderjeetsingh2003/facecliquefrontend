@@ -1,6 +1,44 @@
 import React from 'react'
-
+import { useState } from 'react'
+//import {useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 export default function TeacherLogin() {
+const [credentials, setcredentials] = useState({profId:" ",password:""})
+const navigate=useNavigate()
+
+
+const handleclick=async(e)=>
+{
+  e.preventDefault()
+  console.log("fucntion is triggered")
+  console.log(credentials.profId,credentials.password)
+  //const host="http://localhost:4000/prof/login"
+  const response=await fetch("http://localhost:4000/prof/login",
+{
+  method:"POST",
+  //mode:"cors",
+  headers:{
+    "Content-Type": "application/json",
+  },
+  body:JSON.stringify({profId:credentials.profId,password:credentials.password})
+})
+const json = await response.json();
+console.log("Response:", json); // Add this line to check the response
+if(json.success)
+{
+  localStorage.setItem('token',json.accesstoken)
+  navigate('/profhome')
+
+
+}
+
+}
+
+const handlechange=(e)=>
+{
+  setcredentials({...credentials,[e.target.name]:e.target.value})
+}
+
   return (
    <>
    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -18,9 +56,12 @@ export default function TeacherLogin() {
 
       <div class="relative">
         <input
-          type="email"
-          class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+          type="text"
           placeholder="Enter professor id"
+          class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
+          name='profId'
+          value={credentials.profId}
+          onChange={handlechange}
         />
 
         <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -47,35 +88,7 @@ export default function TeacherLogin() {
     
     
     
-    <div>
-      <label for="email" class="sr-only">Email</label>
-
-      <div class="relative">
-        <input
-          type="email"
-          class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-          placeholder="Enter email"
-        />
-
-        <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="size-4 text-gray-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-            />
-             
-          </svg>
-        </span>
-      </div>
-    </div>
+   
 
     <div>
       <label for="password" class="sr-only">Password</label>
@@ -85,6 +98,10 @@ export default function TeacherLogin() {
           type="password"
           class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
           placeholder="Enter password"
+          id="password"
+          name="password"
+          value={credentials.password}
+          onChange={handlechange}
         />
 
         <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
@@ -117,13 +134,13 @@ export default function TeacherLogin() {
     <div class="flex items-center justify-between">
       <p class="text-sm text-gray-500">
         Not registered?
-        <a class="underline" href="/">Sign up</a>
+        <a class="underline" href="/" >Sign up</a>
       </p>
 
       <button
-        type="submit"
+        type="button"
         class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
-      >
+        onClick={handleclick} >
         Sign in
       </button>
     </div>
