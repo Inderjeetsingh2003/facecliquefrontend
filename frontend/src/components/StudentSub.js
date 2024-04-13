@@ -1,7 +1,21 @@
-import React from 'react'
-
+import React, { useContext } from 'react'
+import { DataContext } from '../context/main'
+import { useNavigate } from 'react-router'
 export default function StudentSub(props) {
   const {subject}=props
+const navigate=useNavigate()
+
+  const{setisclicked,isclicked}=useContext(DataContext)
+const handleclick=()=>
+{
+  setisclicked(false)
+  let subid=subject._id
+  setisclicked(true)
+  navigate(`/subjecthome/${subid}`)
+  
+}
+
+  
   return (
     <div>
        <div className="card" style={{"width": "18rem"}}>
@@ -17,7 +31,7 @@ export default function StudentSub(props) {
   </ul>
   <div className="card-body">
   <button type="button" class="btn btn-primary"
-        style={{"--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem"," --bs-btn-font-size": ".75rem;"}}>
+        style={{"--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem"," --bs-btn-font-size": ".75rem;"}} onClick={handleclick}>
   CLICK TO GIVE ATTANDANCE
 </button>
   </div>

@@ -9,6 +9,7 @@ import ProfHome from './components/ProfHome';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import StudentHome from './components/StudentHome';
 import StudentSub from './components/StudentSub';
+import SubjectHome from './components/SubjectHome';
 
 function App() {
   const router=createBrowserRouter([
@@ -36,7 +37,11 @@ function App() {
     {
       path:'/studentsub',
       element:<StudentSub/>
-        }
+        },
+     {
+      path:"/subjecthome/:subid?",
+      element:<SubjectHome/>
+     }   
   ])
 
   return (

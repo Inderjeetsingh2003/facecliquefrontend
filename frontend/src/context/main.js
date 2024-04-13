@@ -1,13 +1,15 @@
 import React from 'react'
 import { createContext,useState } from 'react'
+
 const DataContext=createContext()
 const DataProvider=({children})=> {
 
 const host="http://localhost:4000"
 
     const [Studentsubject, SetStudentsub] = useState([])
+    const [attandancestore,Setattandancestore]=useState()
 
-
+    const[isclicked,setisclicked]=useState()
     const getstudentsub=async()=>
     {
         try{
@@ -39,8 +41,34 @@ const host="http://localhost:4000"
 
     }
 
+
+    const getattandance=async(subjectrefid)=>
+    {
+        const response=await fetch(`${host}/attandance/getstudentattandance`,
+    {
+        method:"POST",
+        mode:"cors",
+        headers:{
+            "Content-Type":"application/json",
+            "action-token":localStorage.getItem('student-token')
+        },
+        body:JSON.stringify({subjectrefid})
+    })
+
+        const json=await response.json()
+        console.log("hi",json)
+      Setattandancestore(json)
+
+
+
+
+    }
+
+
+
+
 const context={
-    Studentsubject,getstudentsub
+    Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked
 }
 
 
