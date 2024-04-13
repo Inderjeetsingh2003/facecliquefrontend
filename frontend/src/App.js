@@ -8,6 +8,7 @@ import TeacherSignup from './components/TeacherSignup';
 import ProfHome from './components/ProfHome';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import StudentHome from './components/StudentHome';
+import StudentSub from './components/StudentSub';
 
 function App() {
   const router=createBrowserRouter([
@@ -31,7 +32,11 @@ function App() {
     {
       path:'/studenthome',
       element:<StudentHome/>
-    }
+    },
+    {
+      path:'/studentsub',
+      element:<StudentSub/>
+        }
   ])
 
   return (
