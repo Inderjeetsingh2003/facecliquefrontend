@@ -6,6 +6,7 @@ const DataProvider=({children})=> {
 const host="http://localhost:4000"
 
     const [Studentsubject, SetStudentsub] = useState([])
+    const [Professorsubject, SetProfessorsub]=useState([])
 
 
     const getstudentsub=async()=>
@@ -39,8 +40,44 @@ const host="http://localhost:4000"
 
     }
 
+
+
+    const getprofessorsub=async()=>
+    {
+        try{
+            const response=await fetch(`${host}/prof/getprof`,
+            {
+                method:'GET',
+                mode:'cors',
+                headers:{
+                    'Content-Type':"application/json",
+                    'action-token':localStorage.getItem('prof-token')
+                }
+            })
+            if(!response.ok)
+            {
+                console.log("failed to fetch")
+            }
+            
+            console.log(response)
+            const json=await response.json()
+            console.log(json);
+            SetProfessorsub(json)
+            //console.log("this is studentsub state",Studentsub)
+        }
+        catch(error)
+        {
+            console.log("this is frontend getprofessorsub, unable to fetch")
+            console.log(error.message)
+        }
+
+    }
+
+
+
+
 const context={
-    Studentsubject,getstudentsub
+    Studentsubject,getstudentsub,Professorsubject, getprofessorsub
 }
 
 

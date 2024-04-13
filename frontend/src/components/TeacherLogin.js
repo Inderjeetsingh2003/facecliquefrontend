@@ -52,14 +52,15 @@ const handlechange=(e)=>
 
   <form action="#" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
   <div>
-      <label for="email" class="sr-only">Professor Id</label>
+      <label for="Id" class="sr-only">Professor Id</label>
 
       <div class="relative">
         <input
           type="text"
-          placeholder="Enter professor id"
+          placeholder='Enter professor id'
           class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
           name='profId'
+          id="profId"
           value={credentials.profId}
           onChange={handlechange}
         />
