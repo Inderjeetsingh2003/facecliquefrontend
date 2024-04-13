@@ -24,7 +24,7 @@ const json=await response.json()
 if(json.success)
 {
   console.log("the accesstoken for the student is:",json.accesstoken)
-  localStorage.setItem("student-token",json.accesstoken)
+ localStorage.setItem("student-token",json.accesstoken)
   navigate('/studenthome')
 }
 else{
