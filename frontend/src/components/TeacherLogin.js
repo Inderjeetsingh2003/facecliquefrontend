@@ -26,7 +26,7 @@ const json = await response.json();
 console.log("Response:", json); // Add this line to check the response
 if(json.success)
 {
-  localStorage.setItem('token',json.accesstoken)
+  localStorage.setItem('prof-token',json.accesstoken)
   navigate('/profhome')
 
 
