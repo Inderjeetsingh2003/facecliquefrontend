@@ -7,11 +7,8 @@ const DataProvider=({children})=> {
 const host="http://localhost:4000"
 
     const [Studentsubject, SetStudentsub] = useState([])
-<<<<<<< HEAD
     const [attandancestore,Setattandancestore]=useState()
-=======
     const [Professorsubject, SetProfessorsub]=useState([])
->>>>>>> d3200f01d5d6c3e5708f4affc571d50237c5f135
 
     const[isclicked,setisclicked]=useState()
     const getstudentsub=async()=>
@@ -46,7 +43,6 @@ const host="http://localhost:4000"
     }
 
 
-<<<<<<< HEAD
     const getattandance=async(subjectrefid)=>
     {
         const response=await fetch(`${host}/attandance/getstudentattandance`,
@@ -64,9 +60,8 @@ const host="http://localhost:4000"
         console.log("hi",json)
       Setattandancestore(json)
 
+    }
 
-
-=======
 
     const getprofessorsub=async()=>
     {
@@ -96,7 +91,6 @@ const host="http://localhost:4000"
             console.log("this is frontend getprofessorsub, unable to fetch")
             console.log(error.message)
         }
->>>>>>> d3200f01d5d6c3e5708f4affc571d50237c5f135
 
     }
 
@@ -104,11 +98,8 @@ const host="http://localhost:4000"
 
 
 const context={
-<<<<<<< HEAD
-    Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked
-=======
-    Studentsubject,getstudentsub,Professorsubject, getprofessorsub
->>>>>>> d3200f01d5d6c3e5708f4affc571d50237c5f135
+    Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked,
+    Professorsubject, getprofessorsub
 }
 
 
