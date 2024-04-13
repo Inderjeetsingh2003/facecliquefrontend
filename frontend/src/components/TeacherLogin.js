@@ -16,7 +16,7 @@ const handleclick=async(e)=>
   const response=await fetch("http://localhost:4000/prof/login",
 {
   method:"POST",
-  //mode:"cors",
+  mode:"cors",
   headers:{
     "Content-Type": "application/json",
   },
