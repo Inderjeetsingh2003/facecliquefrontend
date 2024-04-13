@@ -9,7 +9,11 @@ import ProfHome from './components/ProfHome';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import StudentHome from './components/StudentHome';
 import StudentSub from './components/StudentSub';
+<<<<<<< HEAD
 import SubjectHome from './components/SubjectHome';
+=======
+import ProfSub from './components/ProfSub';
+>>>>>>> d3200f01d5d6c3e5708f4affc571d50237c5f135
 
 function App() {
   const router=createBrowserRouter([
@@ -38,10 +42,17 @@ function App() {
       path:'/studentsub',
       element:<StudentSub/>
         },
+<<<<<<< HEAD
      {
       path:"/subjecthome/:subid?",
       element:<SubjectHome/>
      }   
+=======
+        {
+          path:'/professorsub',
+          element:<ProfSub/>
+            }
+>>>>>>> d3200f01d5d6c3e5708f4affc571d50237c5f135
   ])
 
   return (
