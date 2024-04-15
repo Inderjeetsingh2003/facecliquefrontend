@@ -3,11 +3,13 @@ import { DataContext } from '../context/main';
 import { useParams } from 'react-router';
 import {useNavigate} from 'react-router-dom'
 import AttandanceNotFound from './AttandanceNotFound.js';
+import FaceRecognition from './Facerecognization.js';
 
 export default function SubjectHome() {
-  const { getattandance, attandancestore } = useContext(DataContext);
+  const { getattandance, attandancestore,holdingattandanceid } = useContext(DataContext);
   const { subid } = useParams();
   const navigate=useNavigate()
+   const[isclicked,setisclicked]=useState(false)
 
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function SubjectHome() {
     
     getattandance(subid);
   }, [subid]);  // Added subid to the dependency array
+
 
 
 
@@ -62,7 +65,21 @@ export default function SubjectHome() {
         </>
       ) : (
         <AttandanceNotFound/>
+
       )}
+     <div style={{
+      display: 'flex',
+      justifyContent: 'center', // Center horizontally
+      alignItems: 'center',     // Center vertically
+      height: '30vh',          // Full viewport height
+      }}>
+     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true)}>
+        Mark your attandance
+      </button>}
+      {isclicked&&<FaceRecognition setisclicked={setisclicked}/>}
+    </div>
+    {console.log(holdingattandanceid)}
+
     </>
   );
 }

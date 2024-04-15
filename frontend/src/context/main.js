@@ -2,6 +2,7 @@ import React from 'react'
 import { createContext,useState } from 'react'
 
 const DataContext=createContext()
+
 const DataProvider=({children})=> {
 
 const host="http://localhost:4000"
@@ -9,6 +10,7 @@ const host="http://localhost:4000"
     const [Studentsubject, SetStudentsub] = useState([])
     const [attandancestore,Setattandancestore]=useState()
     const [Professorsubject, SetProfessorsub]=useState([])
+    const[holdingattandanceid,setholdingattandanceid]=useState()
 
     const[isclicked,setisclicked]=useState()
     const getstudentsub=async()=>
@@ -97,9 +99,37 @@ const host="http://localhost:4000"
 
 
 
+    const sendattandance=async(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid)=>
+    {
+        console.log(attandancedate)
+        console.log(subjectname)
+       // console.log("in the main context of sendattandance",studentid," ",subjectcode," ",status," ",attandancedate," ",subjectname," ",latitude," ",longitude)
+        const response= await fetch(`${host}/attandance/markattandance`,
+    {
+        method:'POST',
+        mode:'cors',
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({"studentid":"21cp033",subjectcode,status,attandancedate,subjectname})
+    })
+    const json=await response.json()
+   if(response.ok)
+   {
+    getattandance(subid)
+   }else{   
+    console.log("unable to mark the attandace")
+   }
+    
+    }
+
+
+
+
 const context={
     Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked,
-    Professorsubject, getprofessorsub
+    Professorsubject, getprofessorsub,
+    holdingattandanceid,setholdingattandanceid,sendattandance
 }
 
 

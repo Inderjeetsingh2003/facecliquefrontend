@@ -8,13 +8,19 @@ const navigate=useNavigate()
   const{setisclicked,isclicked}=useContext(DataContext)
 const handleclick=()=>
 {
-  setisclicked(false)
+
   let subid=subject._id
-  setisclicked(true)
+
   navigate(`/subjecthome/${subid}`)
+  localsubject()
   
 }
-
+//setting the local storage with the subject name and subject code for marking the attandace of that subject
+const localsubject=()=>
+{
+  localStorage.setItem('subjectname',subject.subjectname)
+  localStorage.setItem('subjectcode',subject.subjectcode)
+}
   
   return (
     <div>

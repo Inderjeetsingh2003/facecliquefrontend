@@ -3,7 +3,7 @@ import { useState } from 'react'
 //import {useNavigate} from 'react-router-dom'
 import {useNavigate} from 'react-router-dom'
 export default function TeacherLogin() {
-const [credentials, setcredentials] = useState({profId:" ",password:""})
+const [credentials, setcredentials] = useState({profId:"",password:""})
 const navigate=useNavigate()
 
 
