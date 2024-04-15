@@ -103,7 +103,7 @@ const host="http://localhost:4000"
     {
         console.log(attandancedate)
         console.log(subjectname)
-       // console.log("in the main context of sendattandance",studentid," ",subjectcode," ",status," ",attandancedate," ",subjectname," ",latitude," ",longitude)
+       console.log("in the main context of sendattandance",studentid," ",subjectcode," ",status," ",attandancedate," ",subjectname," ",latitude," ",longitude)
         const response= await fetch(`${host}/attandance/markattandance`,
     {
         method:'POST',
@@ -111,7 +111,7 @@ const host="http://localhost:4000"
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify({"studentid":"21cp033",subjectcode,status,attandancedate,subjectname})
+        body:JSON.stringify({studentid,subjectcode,status,attandancedate,subjectname})
     })
     const json=await response.json()
    if(response.ok)
