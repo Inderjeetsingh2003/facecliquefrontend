@@ -1,6 +1,12 @@
 import React from 'react'
 
 export default function () {
+
+
+  const handleClick=()=>
+  {
+    
+  }
   return (
     <div>{/*
     Graphic from https://www.opendoodles.com/
@@ -42,7 +48,24 @@ export default function () {
     <h1 className="mt-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">no intial record!</h1>
 
     <p className="mt-4 text-gray-500">press the button to mark your first attandance</p>
+
+
+
+ 
+    <a
+  className="inline-block rounded bg-indigo-600 px-8 py-3 text-sm font-medium text-white transition hover:scale-110 hover:shadow-xl focus:outline-none focus:ring active:bg-indigo-500 my-3" onClick={handleClick}
+  
+>
+  Mark your Attendance
+</a>
+
+
+
+
+
+
   </div>
 </div></div>
   )
 }
+
