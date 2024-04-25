@@ -57,7 +57,8 @@ const FaceRecognition = (props) => {
     const recognizeFace = async (imageData) => {
         try {
             const response = await axios.post('http://localhost:5001/recognize', { imageData });
-            setholdingattandanceid(response.data.recognized_face);
+            //console.log(response.data.recognized_face);
+            setholdingattandanceid(() => response.data.recognized_face);
         } catch (error) {
             console.error('Error recognizing face', error);
         }
@@ -99,11 +100,11 @@ else{
         let studentid=holdingattandanceid
         let subjectcode=localStorage.getItem('subjectcode')
         let subjectname=localStorage.getItem('subjectname')
-        let status="present"
+        let status="absent"
    
         sendattandance(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid)
         stopvideo()
-        setisclicked(false)
+        setisclicked(false) //setting back the markattandance button
         
     }
     

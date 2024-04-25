@@ -1,7 +1,16 @@
 import React from 'react'
-
+import { useNavigate } from 'react-router'
 export default function ProfSub(props) {
-    const {subject}=props
+  const {subject}=props
+const navigate=useNavigate()
+
+
+  const handleclick=()=>{
+    const subid=subject.subjectcode
+    console.log("this is hanle click of the proffesor home :",subid)
+    navigate(`/profsubjecthome/${subid}`)
+  }
+
     return (
       <div>
          <div className="card" style={{"width": "18rem"}}>
@@ -17,7 +26,7 @@ export default function ProfSub(props) {
     </ul>
     <div className="card-body">
     <button type="button" class="btn btn-primary"
-          style={{"--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem"," --bs-btn-font-size": ".75rem;"}}>
+          style={{"--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem"," --bs-btn-font-size": ".75rem;"}} onClick={handleclick}>
     CLICK TO TAKE ATTANDANCE
   </button>
     </div>

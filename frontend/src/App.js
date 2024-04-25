@@ -9,9 +9,10 @@ import ProfHome from './components/ProfHome';
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import StudentHome from './components/StudentHome';
 import StudentSub from './components/StudentSub';
-import SubjectHome from './components/SubjectHome';
+import SubjectHomeStudent from './components/SubjectHomeStudent';
 import ProfSub from './components/ProfSub';
 import Facerecognization from './components/Facerecognization';
+import ProfSubjectHome from './components/ProfSubjectHome';
 
 function App() {
   const router=createBrowserRouter([
@@ -36,17 +37,18 @@ function App() {
       path:'/studenthome',
       element:<StudentHome/>
     },
-    {
-      path:'/studentsub',
-      element:<StudentSub/>
-        },
+    
      {
       path:"/subjecthome/:subid?",
-      element:<SubjectHome/>
+      element:<SubjectHomeStudent/>
      },
      {
       path:'/recog',
       element:<Facerecognization/>
+     },
+     {
+      path:"/profsubjecthome/:subid?",
+      element:<ProfSubjectHome/>
      }
   ])
 

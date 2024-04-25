@@ -111,12 +111,14 @@ const host="http://localhost:4000"
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify({studentid,subjectcode,status,attandancedate,subjectname})
+        body:JSON.stringify({"studentid":"21cp202",subjectcode,status,attandancedate,subjectname})
     })
     const json=await response.json()
    if(response.ok)
    {
-    getattandance(subid)
+    setTimeout(() => {
+        getattandance(subid)
+    }, 500);
    }else{   
     console.log("unable to mark the attandace")
    }

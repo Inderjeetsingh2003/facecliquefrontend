@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { DataContext } from '../context/main';
+import { DataContext } from '../context/main.js';
 import { useParams } from 'react-router';
 import {useNavigate} from 'react-router-dom'
-import AttandanceNotFound from './AttandanceNotFound.js';
+import AttandanceNotFound from './AttandanceNotFound.js.js';
 import FaceRecognition from './Facerecognization.js';
 
-export default function SubjectHome() {
+export default function SubjectHomeStudent() {
   const { getattandance, attandancestore,holdingattandanceid } = useContext(DataContext);
   const { subid } = useParams();
   const navigate=useNavigate()
@@ -48,10 +48,10 @@ export default function SubjectHome() {
                     return (
                       <tr key={data._id}>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-900">
-                          {new Date(data.date).toLocaleDateString()}
+                         <b>{new Date(data.date).toLocaleDateString()}</b> 
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          {data.status}
+                        <td className={`whitespace-nowrap px-4 py-2 ${data.status==='present'?'text-green-700':'text-red-700'}`}>
+                         <b>{data.status}</b> 
                         </td>
                       </tr>
                     );
