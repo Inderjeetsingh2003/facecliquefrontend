@@ -13,6 +13,8 @@ const host="http://localhost:4000"
     const[holdingattandanceid,setholdingattandanceid]=useState()
 
     const[isclicked,setisclicked]=useState()
+
+    //for getting the student subject for the home page
     const getstudentsub=async()=>
     {
         try{
@@ -44,7 +46,7 @@ const host="http://localhost:4000"
 
     }
 
-
+//getting the student attandance to display on the student page
     const getattandance=async(subjectrefid)=>
     {
         const response=await fetch(`${host}/attandance/getstudentattandance`,
@@ -64,7 +66,7 @@ const host="http://localhost:4000"
 
     }
 
-
+//to get the subjects that the professor teaches
     const getprofessorsub=async()=>
     {
         try{
@@ -98,7 +100,7 @@ const host="http://localhost:4000"
 
 
 
-
+//marking the student attandance in the database
     const sendattandance=async(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid)=>
     {
         console.log(attandancedate)
@@ -125,13 +127,35 @@ const host="http://localhost:4000"
     
     }
 
+//getting the attandance for the professor
+const [professorsideattandace, setprofessorsideattandace] = useState([])
+
+const getprofattandance=async(subjectcode)=>
+{
+    const response= await fetch(`${host}/attandance/getprofessorattandance`,
+{
+    mode:'cors',
+    method:'POST',
+    headers:{
+        "Content-Type":"application/json",
+    },
+    body:JSON.stringify({subjectcode})
+})
+if(response.ok)
+{
+    let json=await response.json()
+    console.log("the attandace for the students for the subject is ",json)
+    setprofessorsideattandace(json)
+
+}
+}
 
 
 
 const context={
     Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked,
     Professorsubject, getprofessorsub,
-    holdingattandanceid,setholdingattandanceid,sendattandance
+    holdingattandanceid,setholdingattandanceid,sendattandance,getprofattandance,professorsideattandace
 }
 
 
