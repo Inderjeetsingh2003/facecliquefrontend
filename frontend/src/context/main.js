@@ -47,7 +47,7 @@ const host="http://localhost:4000"
     }
 
 //getting the student attandance to display on the student page
-    const getattandance=async(subjectrefid)=>
+    const getattandance=async(subjectcode)=>
     {
         const response=await fetch(`${host}/attandance/getstudentattandance`,
     {
@@ -57,7 +57,7 @@ const host="http://localhost:4000"
             "Content-Type":"application/json",
             "action-token":localStorage.getItem('student-token')
         },
-        body:JSON.stringify({subjectrefid})
+        body:JSON.stringify({subjectcode})
     })
 
         const json=await response.json()
@@ -148,6 +148,7 @@ if(response.ok)
     setprofessorsideattandace(json)
 
 }
+
 }
 
 

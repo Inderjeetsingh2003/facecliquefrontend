@@ -102,7 +102,7 @@ else{
         let subjectname=localStorage.getItem('subjectname')
         let status="absent"
    
-        sendattandance(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid)
+        sendattandance(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid) //[passing the subid for fetching the data back]
         stopvideo()
         setisclicked(false) //setting back the markattandance button
         

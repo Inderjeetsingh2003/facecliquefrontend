@@ -13,6 +13,7 @@ import SubjectHomeStudent from './components/SubjectHomeStudent';
 import ProfSub from './components/ProfSub';
 import Facerecognization from './components/Facerecognization';
 import ProfSubjectHome from './components/ProfSubjectHome';
+import Temp from './components/Temp';
 
 function App() {
   const router=createBrowserRouter([
@@ -49,7 +50,8 @@ function App() {
      {
       path:"/profsubjecthome/:subid?",
       element:<ProfSubjectHome/>
-     }
+     },
+    
   ])
 
   return (

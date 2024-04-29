@@ -1,9 +1,36 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useEffect } from 'react'
 import { DataContext } from '../context/main'
-export default function ProfSubjectHome() {
-const{getprofattandance,professorsideattandace}=useContext(DataContext)
+import {io} from 'socket.io-client'
+import { useMemo } from 'react'
+import { useParams } from 'react-router'
 
+
+export default function ProfSubjectHome() {
+
+  const{subid}=useParams()
+// setting up the socket connection
+ const socket=useMemo(() => io('http://localhost:4000/'), [])
+
+useEffect(() => {
+  socket.on("connect",()=>
+{
+  console.log("socket is connected")
+  console.log(socket.id)
+})
+}, [])
+const[enableattandance,setenableattandance]=useState(false)
+
+const handleclick=async(e)=>
+{
+
+  setenableattandance(true)
+  socket.emit("enableattandance",{enableattandance:true,subid})
+
+
+}
+
+const{getprofattandance,professorsideattandace}=useContext(DataContext)
 console.log("this is professorsubjects attandance page:",professorsideattandace)
 
 let uniquedate;
@@ -16,7 +43,7 @@ if(professorsideattandace)
 }
 
   useEffect(() => {
-   getprofattandance("3cp10")
+   getprofattandance(subid)
   }, [])
   
   return (
@@ -57,6 +84,16 @@ if(professorsideattandace)
       
       </tbody>
     </table>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center', // Center horizontally
+      alignItems: 'center',     // Center vertically
+      height: '30vh',          // Full viewport height
+      }}>
+        <button type="button" className="btn btn-primary btn-lg " onClick={handleclick}>
+        Take student attandace
+      </button>
+        </div>
   </div>
   )
 }
