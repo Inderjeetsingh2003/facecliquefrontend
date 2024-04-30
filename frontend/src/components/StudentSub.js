@@ -9,7 +9,7 @@ const navigate=useNavigate()
 const handleclick=()=>
 {
 
-  let subid=subject._id
+  let subid=subject.subjectcode
 
   navigate(`/subjecthome/${subid}`)
   localsubject()

@@ -1,26 +1,77 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { DataContext } from '../context/main';
+import React, { useContext, useEffect, useState,useMemo } from 'react';
+import { DataContext } from '../context/main.js';
 import { useParams } from 'react-router';
 import {useNavigate} from 'react-router-dom'
-import AttandanceNotFound from './AttandanceNotFound.js';
+import{io} from 'socket.io-client'
+import AttandanceNotFound from './AttandanceNotFound.js.js';
 import FaceRecognition from './Facerecognization.js';
 
-export default function SubjectHome() {
+export default function SubjectHomeStudent() {
   const { getattandance, attandancestore,holdingattandanceid } = useContext(DataContext);
   const { subid } = useParams();
   const navigate=useNavigate()
    const[isclicked,setisclicked]=useState(false)
+   //const[checkingenable,setcheckingenable]=useState()
 
-
+ const socket=useMemo(() =>io("http://localhost:4000/") , [])
+ 
+ const[enableattandance,setenableattandance]=useState({allow:false,subid:''})
+const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
+ const[checkingenable,setcheckingenable]=useState(false);
+let beforesubid;
+let beforeallow;
   useEffect(() => {
     if(!localStorage.getItem('student-token'))
     {
         navigate("/studentlogin")
-    }
-    
+    } 
+    //getting the attandance from the backend
     getattandance(subid);
-  }, [subid]);  // Added subid to the dependency array
 
+
+ //getting the event to enable the button or not to mark the attandance 
+    socket.on('nowgive',(enable)=>
+  {
+    console.log("the value of enable from the backend is :",enable.enableattandance," " ,enable.subid)
+   setenableattandance({
+    allow:enable.enableattandance,
+    subid:enable.subid
+   })
+  
+    
+  })
+    socket.on('beforelaodandclicked',({allowattandance})=>
+  {
+    console.log("if the professor as already clicked the button then values are:",allowattandance.subid," c c",allowattandance.enable)
+    beforesubid=allowattandance.subid
+    beforeallow=allowattandance.enable
+  })
+
+  
+  }
+  , [subid]);  // Added subid to the dependency array
+
+
+  useEffect(() => {
+    console.log("the value of the enbale attandance is :",enableattandance.allow," ",enableattandance.subid)
+    //console.log("the value of the enbale before visit :",beforevisit)
+    console.log('v beforesub',beforesubid)
+    console.log("v before allow",beforeallow)
+    if((enableattandance.allow ||beforeallow )&&(enableattandance.subid===subid||beforesubid))
+    {
+      setcheckingenable(true)
+    }
+
+    setTimeout(() => {
+console.log("the before visitt vairable is:",beforesubid, " ",beforeallow)
+    }, 5000);
+
+    return () => {
+      socket.off('nowgive');
+    }
+   
+  }, [enableattandance])
+  
 
 
 
@@ -48,10 +99,10 @@ export default function SubjectHome() {
                     return (
                       <tr key={data._id}>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-900">
-                          {new Date(data.date).toLocaleDateString()}
+                         <b>{new Date(data.date).toLocaleDateString()}</b> 
                         </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                          {data.status}
+                        <td className={`whitespace-nowrap px-4 py-2 ${data.status==='present'?'text-green-700':'text-red-700'}`}>
+                         <b>{data.status}</b> 
                         </td>
                       </tr>
                     );
@@ -73,7 +124,7 @@ export default function SubjectHome() {
       alignItems: 'center',     // Center vertically
       height: '30vh',          // Full viewport height
       }}>
-     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true)}>
+     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true) } disabled={!checkingenable} >
         Mark your attandance
       </button>}
       {isclicked&&<FaceRecognition setisclicked={setisclicked}/>}

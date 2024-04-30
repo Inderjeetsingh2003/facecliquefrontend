@@ -13,6 +13,8 @@ const host="http://localhost:4000"
     const[holdingattandanceid,setholdingattandanceid]=useState()
 
     const[isclicked,setisclicked]=useState()
+
+    //for getting the student subject for the home page
     const getstudentsub=async()=>
     {
         try{
@@ -44,8 +46,8 @@ const host="http://localhost:4000"
 
     }
 
-
-    const getattandance=async(subjectrefid)=>
+//getting the student attandance to display on the student page
+    const getattandance=async(subjectcode)=>
     {
         const response=await fetch(`${host}/attandance/getstudentattandance`,
     {
@@ -55,7 +57,7 @@ const host="http://localhost:4000"
             "Content-Type":"application/json",
             "action-token":localStorage.getItem('student-token')
         },
-        body:JSON.stringify({subjectrefid})
+        body:JSON.stringify({subjectcode})
     })
 
         const json=await response.json()
@@ -64,7 +66,7 @@ const host="http://localhost:4000"
 
     }
 
-
+//to get the subjects that the professor teaches
     const getprofessorsub=async()=>
     {
         try{
@@ -98,12 +100,12 @@ const host="http://localhost:4000"
 
 
 
-
+//marking the student attandance in the database
     const sendattandance=async(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid)=>
     {
         console.log(attandancedate)
         console.log(subjectname)
-       // console.log("in the main context of sendattandance",studentid," ",subjectcode," ",status," ",attandancedate," ",subjectname," ",latitude," ",longitude)
+       console.log("in the main context of sendattandance",studentid," ",subjectcode," ",status," ",attandancedate," ",subjectname," ",latitude," ",longitude)
         const response= await fetch(`${host}/attandance/markattandance`,
     {
         method:'POST',
@@ -111,25 +113,50 @@ const host="http://localhost:4000"
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify({studentid,subjectcode,status,attandancedate,subjectname})
+        body:JSON.stringify({"studentid":"21cp202",subjectcode,status,attandancedate,subjectname})
     })
     const json=await response.json()
    if(response.ok)
    {
-    getattandance(subid)
+    setTimeout(() => {
+        getattandance(subid)
+    }, 500);
    }else{   
     console.log("unable to mark the attandace")
    }
     
     }
 
+//getting the attandance for the professor
+const [professorsideattandace, setprofessorsideattandace] = useState([])
+
+const getprofattandance=async(subjectcode)=>
+{
+    const response= await fetch(`${host}/attandance/getprofessorattandance`,
+{
+    mode:'cors',
+    method:'POST',
+    headers:{
+        "Content-Type":"application/json",
+    },
+    body:JSON.stringify({subjectcode})
+})
+if(response.ok)
+{
+    let json=await response.json()
+    console.log("the attandace for the students for the subject is ",json)
+    setprofessorsideattandace(json)
+
+}
+
+}
 
 
 
 const context={
     Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked,
     Professorsubject, getprofessorsub,
-    holdingattandanceid,setholdingattandanceid,sendattandance
+    holdingattandanceid,setholdingattandanceid,sendattandance,getprofattandance,professorsideattandace
 }
 
 
