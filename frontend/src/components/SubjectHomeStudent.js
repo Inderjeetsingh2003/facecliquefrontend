@@ -18,8 +18,7 @@ export default function SubjectHomeStudent() {
  const[enableattandance,setenableattandance]=useState({allow:false,subid:''})
 const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
  const[checkingenable,setcheckingenable]=useState(false);
-let beforesubid;
-let beforeallow;
+
   useEffect(() => {
     if(!localStorage.getItem('student-token'))
     {
@@ -29,7 +28,7 @@ let beforeallow;
     getattandance(subid);
 
 
- //getting the event to enable the button or not to mark the attandance 
+ //getting the event to enable the button or not to mark the attandance this is when the professor clicks in real time
     socket.on('nowgive',(enable)=>
   {
     console.log("the value of enable from the backend is :",enable.enableattandance," " ,enable.subid)
@@ -40,31 +39,31 @@ let beforeallow;
   
     
   })
+  //if professor has already clciked
     socket.on('beforelaodandclicked',({allowattandance})=>
   {
     console.log("if the professor as already clicked the button then values are:",allowattandance.subid," c c",allowattandance.enable)
-    beforesubid=allowattandance.subid
-    beforeallow=allowattandance.enable
+    setbeforevisit({
+      allow:allowattandance.enable,
+      sub:allowattandance.subid
+    })
   })
 
   
   }
-  , [subid]);  // Added subid to the dependency array
+  , [subid,socket]);  // Added subid to the dependency array
 
 
   useEffect(() => {
     console.log("the value of the enbale attandance is :",enableattandance.allow," ",enableattandance.subid)
     //console.log("the value of the enbale before visit :",beforevisit)
-    console.log('v beforesub',beforesubid)
-    console.log("v before allow",beforeallow)
-    if((enableattandance.allow ||beforeallow )&&(enableattandance.subid===subid||beforesubid))
+
+    if((enableattandance.allow ||beforevisit.allow)&&(enableattandance.subid===subid||beforevisit.subid===subid))
     {
       setcheckingenable(true)
     }
 
-    setTimeout(() => {
-console.log("the before visitt vairable is:",beforesubid, " ",beforeallow)
-    }, 5000);
+
 
     return () => {
       socket.off('nowgive');
