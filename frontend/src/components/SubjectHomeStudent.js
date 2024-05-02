@@ -11,7 +11,14 @@ export default function SubjectHomeStudent() {
   const { subid } = useParams();
   const navigate=useNavigate()
    const[isclicked,setisclicked]=useState(false)
-   //const[checkingenable,setcheckingenable]=useState()
+
+   //filtering the attandance as per month
+   const[selectmonth,setselectmonth]=useState(new Date().getMonth()+1)
+   const handlemonth=(value)=>
+   {
+    setselectmonth(value)
+   }
+   
 
  const socket=useMemo(() =>io("http://localhost:4000/") , [])
  
@@ -93,19 +100,27 @@ const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {attandancestore.subjectattandance.entires.map((data) => {
-                    console.log(data.date);  // Moved outside the return statement
-                    return (
-                      <tr key={data._id}>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-900">
-                         <b>{new Date(data.date).toLocaleDateString()}</b> 
-                        </td>
-                        <td className={`whitespace-nowrap px-4 py-2 ${data.status==='present'?'text-green-700':'text-red-700'}`}>
-                         <b>{data.status}</b> 
-                        </td>
-                      </tr>
-                    );
-                  })}
+                {attandancestore.subjectattandance.entires.map((entry) => {
+                  if(entry.month===selectmonth)
+                  {
+                    return entry.Entires.map((data) => {
+                      console.log("this is date", data.date);
+                      return (
+                        <tr key={data._id}>
+                          <td className="whitespace-nowrap px-4 py-2 text-gray-900">
+                            <b>{new Date(data.date).toLocaleDateString()}</b>
+                          </td>
+                          <td className={`whitespace-nowrap px-4 py-2 ${data.status === 'present' ? 'text-green-700' : 'text-red-700'}`}>
+                            <b>{data.status}</b>
+                          </td>
+                        </tr>
+                      );
+                    });
+                  }else{
+                    return null;
+                  }
+  
+})}
                 </tbody>
               </table>
             </div>
@@ -123,13 +138,17 @@ const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
       alignItems: 'center',     // Center vertically
       height: '30vh',          // Full viewport height
       }}>
-     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true) } disabled={!checkingenable} >
+     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true) }   >
         Mark your attandance
       </button>}
       {isclicked&&<FaceRecognition setisclicked={setisclicked}/>}
     </div>
     {console.log(holdingattandanceid)}
-
+<select onChange={(event)=>handlemonth(parseInt(event.target.value))}>
+  <option value={4}>april</option>
+  <option value={5}>may</option>
+</select>
+<b>{console.log("selected month is ",selectmonth)}</b>
     </>
   );
 }
