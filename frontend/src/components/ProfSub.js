@@ -13,8 +13,8 @@ const navigate=useNavigate()
 
     return (
       <div>
-         <div className="card" style={{"width": "18rem"}}>
-    <img src="..." className="card-img-top" alt="..."/>
+         <div className="card" style={{ maxWidth: "100%"}}>
+    
     <div className="card-body">
       <h5 className="card-title"><b>{subject.subjectname}</b></h5>
       <p className="card-text">this is temp description</p>
@@ -26,7 +26,7 @@ const navigate=useNavigate()
     </ul>
     <div className="card-body">
     <button type="button" class="btn btn-primary"
-          style={{"--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem"," --bs-btn-font-size": ".75rem;"}} onClick={handleclick}>
+          style={{"--bs-btn-padding-y": ".25rem", "--bs-btn-padding-x": ".5rem"," --bs-btn-font-size": ".75rem;", width:"100%"}} onClick={handleclick}>
     CLICK TO TAKE ATTANDANCE
   </button>
     </div>

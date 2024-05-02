@@ -112,13 +112,32 @@ else{
 
     return (
         <div>
-            <video ref={videoRef} width="640" height="480" playsInline></video>
-            <div className='mx-4 my-3'>
-            <button type="button" class="btn btn-primary btn-lg mx-3" onClick={startVideo}>Start Video</button>
-            <button type="button" class="btn btn-primary btn-lg mx-3"  onClick={captureImage}>Recognize Face</button>
-            <button type="button" class="btn btn-primary btn-lg" onClick={collectingattandance}>mark your present</button>
+            <video ref={videoRef} maxWidth="640" height="480" playsInline></video>
+            <div className='mx-3 my-3' style={{maxWidth:"100%"}}>
+            
+            
+            <span class="inline-flex -space-x-px overflow-hidden rounded-md border bg-white shadow-sm mx-2" style={{maxWidth:"100%"}}>
+  <button
+    class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative" onClick={startVideo}
+  >
+    Start Video
+  </button>
 
-            {holdingattandanceid && <p><b>Recognized Face:</b> <h6>{holdingattandanceid}</h6></p>}</div>
+  <button
+    class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative" onClick={captureImage}
+  >
+    Recognize face
+  </button>
+
+  <button
+    class="inline-block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:relative" onClick={collectingattandance}
+  >
+    Mark Present
+  </button>
+</span>
+
+{holdingattandanceid && <p><b>Recognized Face:</b> <h6>{holdingattandanceid}</h6></p>}</div>
+
         </div>
     );
 };
