@@ -1,17 +1,43 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef, useState ,useEffect} from 'react';
 import axios from 'axios';
 import { DataContext } from '../context/main';
 import { useParams } from 'react-router';
 const FaceRecognition = (props) => {
-    const videoRef = useRef(null);
-    const { holdingattandanceid, setholdingattandanceid,sendattandance } = useContext(DataContext);
-    const[latitude,setlatitude]=useState(null);
-    const[longitude,setlongitude]=useState(null)
-    const [error,seterror]=useState(null)
+  const videoRef = useRef(null);
+    //holdding the attandance id
+    const { holdingattandanceid, setholdingattandanceid,sendattandance,getlocation } = useContext(DataContext);
     const { subid } = useParams();
+    //to disable the facerecogination part one the attendance is marked
     const{setisclicked}=props
+
+    //for storing the latitude and longitude of the student
+    const[studentlatitude,setstudentlatitude]=useState(null);
+    const[studentlongitude,setstudentlongitude]=useState(null)
+    const [studentlocationerror,setstudentlocationerror]=useState(null)
+useEffect(() => {
+  getlocation().then(({latitude,longitude,error})=>
+{
+    if(error)
+        {
+            console.log("error in then is:",error)
+            setstudentlocationerror(error)
+        }
+        else{
+            console.log("the latitude is :",latitude)
+            setstudentlatitude(latitude)
+            console.log("the longitude is:",longitude)
+            setstudentlongitude(longitude)
+        }
+}).catch((error)=>
+{
+    console.log("error in catch is:",error)
+    setstudentlocationerror(error)
+})
+
+  
+}, [getlocation])
+    //starting the video to fetch the frame
     const startVideo = () => {
-    
         navigator.mediaDevices.getUserMedia({ video: true })
             .then((stream) => {
                 videoRef.current.srcObject = stream;
@@ -22,6 +48,7 @@ const FaceRecognition = (props) => {
             });
 
     };
+    //stoping the video once attanddance is marked
     const stopvideo=()=>
     {
         
@@ -33,15 +60,10 @@ const FaceRecognition = (props) => {
                     track.stop();
                 });
             }
-    
-        
-           
             videoRef.current.srcObject = null;
-            
-        
-    
     }
 
+    //capturing the photo from the video
     const captureImage = () => {
         const canvas = document.createElement('canvas');
         canvas.width = videoRef.current.videoWidth;
@@ -54,6 +76,7 @@ const FaceRecognition = (props) => {
         recognizeFace(imageData);
     };
 
+    //sending the photo to server for recognisation
     const recognizeFace = async (imageData) => {
         try {
             const response = await axios.post('http://localhost:5001/recognize', { imageData });
@@ -78,31 +101,18 @@ const getFormattedDate = () => {
     const collectingattandance=async()=>
     {
         let attandancedate=getFormattedDate();
-        if(navigator.geolocation)
-        {
-            navigator.geolocation.getCurrentPosition(async(pos)=>
-        {
-            setlatitude(await pos.coords.latitude)
-            setlongitude(await pos.coords.longitude)
-            seterror(null)
-        },
-    (error)=>
-{
-    seterror(error.message)
-})   }
-else{
-    console.log("the browser does not suppport geo location")
-}
-    
 
-    console.log("in the face recognisation part:" ,holdingattandanceid," ",localStorage.getItem('subjectcode')," ",localStorage.getItem('subjectname'),attandancedate,)
+    console.log("in the face recognisation part:" ,holdingattandanceid," ",localStorage.getItem('subjectcode')," ",localStorage.getItem('subjectname'),attandancedate,studentlatitude," ",studentlongitude)
 
         let studentid=holdingattandanceid
         let subjectcode=localStorage.getItem('subjectcode')
         let subjectname=localStorage.getItem('subjectname')
         let status="absent"
-   
-        sendattandance(studentid,subjectcode,subjectname,status,attandancedate,latitude,longitude,subid) //[passing the subid for fetching the data back]
+        if(!studentlatitude||!studentlongitude)
+            {
+                return studentlocationerror;
+            }
+        //sendattandance(studentid,subjectcode,subjectname,status,attandancedate,studentlatitude,studentlongitude,subid) //[passing the subid for fetching the data back]
         stopvideo()
         setisclicked(false) //setting back the markattandance button
         

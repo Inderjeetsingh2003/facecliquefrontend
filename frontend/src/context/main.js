@@ -153,11 +153,34 @@ if(response.ok)
 }
 
 
-
+//getting the latittude and logitude of professor and the student
+const getlocation=()=>
+    {
+        return new Promise((resolve,reject)=>
+            {
+                    if(navigator.geolocation)
+                        {
+                            navigator.geolocation.getCurrentPosition((pos)=>
+                            {
+                                const latitude=pos.coords.latitude
+                                const longitude=pos.coords.longitude
+                                resolve({latitude,longitude,error:null})
+                            },(error)=>
+                                {
+                                    reject(error.message)
+                                }
+                            )
+                        }
+                        else{
+                            reject("the device does not support the geo location")
+                        }
+            })
+    }
 const context={
     Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked,
     Professorsubject, getprofessorsub,
-    holdingattandanceid,setholdingattandanceid,sendattandance,getprofattandance,professorsideattandace
+    holdingattandanceid,setholdingattandanceid,sendattandance,getprofattandance,professorsideattandace,
+    getlocation
 }
 
 

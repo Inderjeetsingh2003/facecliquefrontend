@@ -7,6 +7,7 @@ import { useParams } from 'react-router'
 
 
 export default function ProfSubjectHome() {
+  //holding the value of the selected month fo rfiltering the attandance records
   const[selectedmonth,setselectmonth]=useState(new Date().getMonth()+1)
   const{subid}=useParams()
 // setting up the socket connection
@@ -19,8 +20,10 @@ useEffect(() => {
   console.log(socket.id)
 })
 }, [])
-const[enableattandance,setenableattandance]=useState(false)
 
+
+// for enabling the student side attandance button
+const[enableattandance,setenableattandance]=useState(false)
 const handleclick=async(e)=>
 {
 
@@ -28,9 +31,11 @@ const handleclick=async(e)=>
   socket.emit("enableattandance",{enableattandance:true,subid})
 }
 
-const{getprofattandance,professorsideattandace}=useContext(DataContext)
+//getting the professor side attandance for the subject he teaches
+const{getprofattandance,professorsideattandace,getlocation}=useContext(DataContext)
 console.log("this is professorsubjects attandance page:",professorsideattandace)
 
+//fitlering the unqiue dates from the obejct for shwoing the attandace
 let uniquedate;
 if (professorsideattandace) {
   let uniqueDatesSet = new Set();
@@ -42,21 +47,47 @@ if (professorsideattandace) {
       });
     });
   });
-
+//sorting the dates ascending order
    uniquedate = [...uniqueDatesSet].sort((a, b) => a.localeCompare(b));
   console.log("Unique dates:", uniquedate);
 }
 
 
-
+// fetching the data as the month is
 useEffect(() => {
   getprofattandance(subid,selectedmonth)
 }, [subid,selectedmonth])
 
 
+const[professorlatitude,setprofessorlatitude]=useState()
+const[professorlongitude,setprofessorlongitude]=useState()
+const[professorlocationerror,setprofessorlocationerror]=useState()
+
+useEffect(()=>
+{
+getlocation().then(({latitude,longitude,error})=>
+{
+  if(error)
+    {
+      console.log("error in then is:",error)
+      setprofessorlocationerror(error)
+    }
+    else{
+      console.log("professor latitude is :",latitude)
+  setprofessorlatitude(latitude)
+
+  console.log("professor longitude is:",longitude)
+  setprofessorlongitude(longitude)
+    }
+  
+}).catch((error)=>
+{
+  console.log("the error in catch is :",error)
+  setprofessorlocationerror(error)
+})
+},[])
 
 // for fetching the student data of specified month
-
 const handlemonth=(value)=>
 {
 setselectmonth(value)
