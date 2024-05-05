@@ -33,54 +33,9 @@ const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
     } 
     //getting the attandance from the backend
     getattandance(subid);
-
-
- //getting the event to enable the button or not to mark the attandance this is when the professor clicks in real time
-    socket.on('nowgive',(enable)=>
-  {
-    console.log("the value of enable from the backend is :",enable.enableattandance," " ,enable.subid)
-   setenableattandance({
-    allow:enable.enableattandance,
-    subid:enable.subid
-   })
-  
-    
-  })
-  //if professor has already clciked
-    socket.on('beforelaodandclicked',({allowattandance})=>
-  {
-    console.log("if the professor as already clicked the button then values are:",allowattandance.subid," c c",allowattandance.enable)
-    setbeforevisit({
-      allow:allowattandance.enable,
-      sub:allowattandance.subid
-    })
-  })
-
   
   }
-  , [subid,socket]);  // Added subid to the dependency array
-
-
-  useEffect(() => {
-    console.log("the value of the enbale attandance is :",enableattandance.allow," ",enableattandance.subid)
-    //console.log("the value of the enbale before visit :",beforevisit)
-
-    if((enableattandance.allow ||beforevisit.allow)&&(enableattandance.subid===subid||beforevisit.subid===subid))
-    {
-      setcheckingenable(true)
-    }
-
-
-
-    return () => {
-      socket.off('nowgive');
-    }
-   
-  }, [enableattandance])
-  
-
-
-
+  , [subid]);  // Added subid to the dependency array
   return (
     <>
       {/*

@@ -13,6 +13,7 @@ export default function ProfSubjectHome() {
 // setting up the socket connection
  const socket=useMemo(() => io('http://localhost:4000/'), [])
 
+ //establishing the conenction with the sever (socket-io-connectionn)
 useEffect(() => {
   socket.on("connect",()=>
 {
@@ -27,8 +28,9 @@ const[enableattandance,setenableattandance]=useState(false)
 const handleclick=async(e)=>
 {
 
-  setenableattandance(true)
-  socket.emit("enableattandance",{enableattandance:true,subid})
+ // setenableattandance(true)
+ socket.emit('profclick',{professorlatitude,professorlongitude,subid})
+
 }
 
 //getting the professor side attandance for the subject he teaches
@@ -90,7 +92,7 @@ getlocation().then(({latitude,longitude,error})=>
 // for fetching the student data of specified month
 const handlemonth=(value)=>
 {
-setselectmonth(value)
+
 }
 
 
