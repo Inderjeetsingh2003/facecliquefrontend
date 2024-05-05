@@ -130,8 +130,9 @@ const host="http://localhost:4000"
 //getting the attandance for the professor
 const [professorsideattandace, setprofessorsideattandace] = useState([])
 
-const getprofattandance=async(subjectcode)=>
+const getprofattandance=async(subjectcode,month)=>
 {
+    console.log("the value of the month is:",typeof(month))
     const response= await fetch(`${host}/attandance/getprofessorattandance`,
 {
     mode:'cors',
@@ -139,7 +140,7 @@ const getprofattandance=async(subjectcode)=>
     headers:{
         "Content-Type":"application/json",
     },
-    body:JSON.stringify({subjectcode})
+    body:JSON.stringify({subjectcode,month})
 })
 if(response.ok)
 {

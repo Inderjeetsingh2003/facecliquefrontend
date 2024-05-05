@@ -7,7 +7,7 @@ import { useParams } from 'react-router'
 
 
 export default function ProfSubjectHome() {
-
+  const[selectedmonth,setselectmonth]=useState(new Date().getMonth()+1)
   const{subid}=useParams()
 // setting up the socket connection
  const socket=useMemo(() => io('http://localhost:4000/'), [])
@@ -26,26 +26,44 @@ const handleclick=async(e)=>
 
   setenableattandance(true)
   socket.emit("enableattandance",{enableattandance:true,subid})
-
-
 }
 
 const{getprofattandance,professorsideattandace}=useContext(DataContext)
 console.log("this is professorsubjects attandance page:",professorsideattandace)
 
 let uniquedate;
-if(professorsideattandace)
-{
+if (professorsideattandace) {
+  let uniqueDatesSet = new Set();
+  professorsideattandace.forEach((student) => {
+    student.attendance.forEach((entry) => {
+      entry.entires.Entires.forEach((attendance) => {
+        let date = new Date(attendance.date).toISOString().slice(0, 10);
+        uniqueDatesSet.add(date);
+      });
+    });
+  });
 
-   uniquedate=[...new Set(professorsideattandace.flatMap(item=>item.attendance.map(entry=>new Date(entry.entires.date).toISOString().slice(0,10))))]
-  uniquedate.sort((a,b)=>a-b);
-  console.log(uniquedate)
+   uniquedate = [...uniqueDatesSet].sort((a, b) => a.localeCompare(b));
+  console.log("Unique dates:", uniquedate);
 }
 
-  useEffect(() => {
-   getprofattandance(subid)
-  }, [])
-  
+
+
+useEffect(() => {
+  getprofattandance(subid,selectedmonth)
+}, [subid,selectedmonth])
+
+
+
+// for fetching the student data of specified month
+
+const handlemonth=(value)=>
+{
+setselectmonth(value)
+}
+
+
+
   return (
     <div className="overflow-x-auto">
     <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -55,7 +73,7 @@ if(professorsideattandace)
           {
             uniquedate.map(date=>
             {
-              return <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{date}</th>
+              return <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900" key={date}>{date}</th>
 
             })
           }
@@ -63,26 +81,24 @@ if(professorsideattandace)
         </tr>
       </thead>
   
-     <tbody className="divide-y divide-gray-200">
-        {
-          professorsideattandace.map(studentid_=>
-            <tr className="odd:bg-gray-50">
-              
-            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{studentid_.studentid}</td>
-            {uniquedate.map(date=>
-            {
-               let attandaceentry=studentid_.attendance.find(entry=>new Date(entry.entires.date).toISOString().slice(0,10)===date)
-              return<td className={`whitespace-nowrap px-4 py-2 font-medium ${attandaceentry&&attandaceentry.entires.status==='present'?'text-green-700':'text-red-700'}`}>{attandaceentry?(attandaceentry.entires.status):('')}</td>
-            })}
-        </tr>
-          )
-        }
-          
-  
-        
-  
-      
-      </tbody>
+      <tbody className="divide-y divide-gray-200">
+  {professorsideattandace.map((student) => (
+    <tr key={student.studentid} className="odd:bg-gray-50">
+      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{student.studentid}</td>
+      {uniquedate.map((date) => {
+        let attendanceEntry = student.attendance.find((entry) => entry.entires.Entires.some((attendance) => new Date(attendance.date).toISOString().slice(0, 10) === date));
+       let status = attendanceEntry ? attendanceEntry.entires.Entires.find((attendance) => new Date(attendance.date).toISOString().slice(0, 10) === date).status : '';
+        let textColor = status === 'present' ? 'text-green-700' : 'text-red-700';
+        return (
+          <td key={date} className={`whitespace-nowrap px-4 py-2 font-medium ${textColor}`}>
+            {status}
+          </td>
+        );
+      })}
+    </tr>
+  ))}
+</tbody>
+
     </table>
     <div style={{
       display: 'flex',
@@ -94,6 +110,11 @@ if(professorsideattandace)
         Take student attandace
       </button>
         </div>
+        <select onChange={(event)=>handlemonth(parseInt(event.target.value))}>
+          <option value={4}>april</option>
+          <option value={5}>may</option>
+        </select>
+        <b>{console.log(selectedmonth)}</b>
   </div>
   )
 }

@@ -15,6 +15,7 @@ import Facerecognization from './components/Facerecognization';
 import ProfSubjectHome from './components/ProfSubjectHome';
 
 
+
 function App() {
   const router=createBrowserRouter([
     {
@@ -51,6 +52,7 @@ function App() {
       path:"/profsubjecthome/:subid?",
       element:<ProfSubjectHome/>
      },
+     
     
   ])
 
