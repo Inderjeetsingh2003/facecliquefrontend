@@ -7,7 +7,7 @@ import AttandanceNotFound from './AttandanceNotFound.js.js';
 import FaceRecognition from './Facerecognization.js';
 
 export default function SubjectHomeStudent() {
-  const { getattandance, attandancestore,holdingattandanceid } = useContext(DataContext);
+  const { getattandance, attandancestore,holdingattandanceid,enable } = useContext(DataContext);
   const { subid } = useParams();
   const navigate=useNavigate()
    const[isclicked,setisclicked]=useState(false)
@@ -35,13 +35,14 @@ const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
     getattandance(subid);
   
   }
-  , [subid]);  // Added subid to the dependency array
+  , [subid,enable]);  // Added subid to the dependency array
   return (
     <>
       {/*
         Heads up! 👋
         This component comes with some `rtl` classes. Please remove them if they are not needed in your project.
       */}
+      {console.log("the value of the enable is :",enable)}
       {console.log("this is inside the subject page:", attandancestore)}
       {attandancestore && attandancestore.success ? (
         <>
@@ -93,15 +94,15 @@ const[beforevisit,setbeforevisit]=useState({subid:'',allow:false})
       alignItems: 'center',     // Center vertically
       height: '30vh',          // Full viewport height
       }}>
-     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true) }   >
+     { !isclicked&&<button type="button" className="btn btn-primary btn-lg " onClick={()=>setisclicked(true) }>
         Mark your attandance
       </button>}
       {isclicked&&<FaceRecognition setisclicked={setisclicked}/>}
     </div>
     {console.log(holdingattandanceid)}
 <select onChange={(event)=>handlemonth(parseInt(event.target.value))}>
-  <option value={4}>april</option>
   <option value={5}>may</option>
+  <option value={6}>june</option>
 </select>
 <b>{console.log("selected month is ",selectmonth)}</b>
     </>

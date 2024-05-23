@@ -14,29 +14,34 @@ export default function ProfSubjectHome() {
  const socket=useMemo(() => io('http://localhost:4000/'), [])
 
  //establishing the conenction with the sever (socket-io-connectionn)
-useEffect(() => {
-  socket.on("connect",()=>
-{
-  console.log("socket is connected")
-  console.log(socket.id)
-})
-}, [])
+
 
 
 // for enabling the student side attandance button
 const[enableattandance,setenableattandance]=useState(false)
+const getFormattedDate = () => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+};
+
 const handleclick=async(e)=>
 {
+const attandancedate="2024-05-25"
+//getFormattedDate()
+setenable(true);
+ markprofsideattandance(professorlatitude,professorlongitude,subid,attandancedate,professorlatitude,professorlongitude)
 
- // setenableattandance(true)
- socket.emit('profclick',{professorlatitude,professorlongitude,subid})
 
 }
 
 //getting the professor side attandance for the subject he teaches
-const{getprofattandance,professorsideattandace,getlocation}=useContext(DataContext)
+const{getprofattandance,professorsideattandace,getlocation,markprofsideattandance,setenable,enable}=useContext(DataContext)
 console.log("this is professorsubjects attandance page:",professorsideattandace)
-
+console.log("the enable attandance is :",enable)
 //fitlering the unqiue dates from the obejct for shwoing the attandace
 let uniquedate;
 if (professorsideattandace) {
@@ -71,7 +76,7 @@ getlocation().then(({latitude,longitude,error})=>
 {
   if(error)
     {
-      console.log("error in then is:",error)
+      console.log("error in then is:",professorlocationerror)
       setprofessorlocationerror(error)
     }
     else{
@@ -84,7 +89,7 @@ getlocation().then(({latitude,longitude,error})=>
   
 }).catch((error)=>
 {
-  console.log("the error in catch is :",error)
+  console.log("the error in catch is :",professorlocationerror)
   setprofessorlocationerror(error)
 })
 },[])
@@ -92,7 +97,7 @@ getlocation().then(({latitude,longitude,error})=>
 // for fetching the student data of specified month
 const handlemonth=(value)=>
 {
-
+setselectmonth(value)
 }
 
 
@@ -144,8 +149,8 @@ const handlemonth=(value)=>
       </button>
         </div>
         <select onChange={(event)=>handlemonth(parseInt(event.target.value))}>
-          <option value={4}>april</option>
           <option value={5}>may</option>
+          <option value={6}>june</option>
         </select>
         <b>{console.log(selectedmonth)}</b>
   </div>

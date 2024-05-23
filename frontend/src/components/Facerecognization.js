@@ -100,19 +100,20 @@ const getFormattedDate = () => {
     //sending the attandace to backend
     const collectingattandance=async()=>
     {
-        let attandancedate=getFormattedDate();
+        let attandancedate="2024-05-25"
+         //getFormattedDate();
 
     console.log("in the face recognisation part:" ,holdingattandanceid," ",localStorage.getItem('subjectcode')," ",localStorage.getItem('subjectname'),attandancedate,studentlatitude," ",studentlongitude)
 
         let studentid=holdingattandanceid
         let subjectcode=localStorage.getItem('subjectcode')
         let subjectname=localStorage.getItem('subjectname')
-        let status="absent"
+        let status="present"
         if(!studentlatitude||!studentlongitude)
             {
                 return studentlocationerror;
             }
-        //sendattandance(studentid,subjectcode,subjectname,status,attandancedate,studentlatitude,studentlongitude,subid) //[passing the subid for fetching the data back]
+        sendattandance(studentid,subjectcode,subjectname,status,attandancedate,studentlatitude,studentlongitude,subid) //[passing the subid for fetching the data back]
         stopvideo()
         setisclicked(false) //setting back the markattandance button
         

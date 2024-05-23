@@ -113,9 +113,10 @@ const host="http://localhost:4000"
         headers:{
             "Content-Type":"application/json"
         },
-        body:JSON.stringify({"studentid":"21cp202",subjectcode,status,attandancedate,subjectname})
+        body:JSON.stringify({"studentid":"21cp037",subjectcode,status,attandancedate,subjectname,"studentlatitude":latitude,"studentlongitude":longitude})
     })
     const json=await response.json()
+    console.log("this is json for mark attandance",json)
    if(response.ok)
    {
     setTimeout(() => {
@@ -176,11 +177,35 @@ const getlocation=()=>
                         }
             })
     }
+
+
+  const markprofsideattandance=async(professorlatitude,professorlongitude,subjectcode,attandancedate)=>
+    {
+            const response=await fetch(`${host}/attandance/markprofessorattandance`,
+                {  mode:'cors',
+                method:'POST',
+                    headers:{
+                     
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({professorlatitude,professorlongitude,subjectcode,attandancedate})
+                }
+
+            )
+            if(response.ok)
+                {
+                    const json=await response.json()
+                    console.log(json)
+                }
+    }
+    
+    
+    const[enable,setenable]=useState(false);
 const context={
     Studentsubject,getstudentsub,getattandance,attandancestore,isclicked,setisclicked,
     Professorsubject, getprofessorsub,
     holdingattandanceid,setholdingattandanceid,sendattandance,getprofattandance,professorsideattandace,
-    getlocation
+    getlocation,markprofsideattandance,enable,setenable
 }
 
 
